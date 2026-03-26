@@ -42,7 +42,7 @@ function loadProfile() {
 function renderProfile(profile) {
 
     
-    document.getElementById("username").innerHTML = profile.username;
+    document.getElementById("username").textContent = profile.username;
 
     const list = document.getElementById("notifications");
     list.innerHTML = "";
