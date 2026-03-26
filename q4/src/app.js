@@ -20,7 +20,12 @@ let currentProfile = null;
 function loadProfile() {
 
     const text = document.getElementById("profileInput").value;
-
+    try {
+        JSON.parse(text);
+    } catch (error) {
+        alert("Invalid profile format");
+        return;
+    }
    
     const profile = JSON.parse(text);
 
@@ -43,13 +48,9 @@ function renderProfile(profile) {
     list.innerHTML = "";
 
     for (let n of profile.notifications) {
-
-        const li = document.createElement("li");
-
-        
-        li.innerHTML = n;
-
-        list.appendChild(li);
+        const item = document.createElement("li");
+        item.textContent = n;
+        list.appendChild(item);
     }
 }
 
@@ -59,8 +60,12 @@ function renderProfile(profile) {
 -------------------------- */
 
 function saveSession() {
-    localStorage.setItem("profile", JSON.stringify(currentProfile));
+    if (!currentProfile) {
+        alert("No profile loaded");
+        return;
+    }
 
+    localStorage.setItem("profile", JSON.stringify(currentProfile));
     alert("Session saved");
 }
 
@@ -70,11 +75,8 @@ function loadSession() {
     const stored = localStorage.getItem("profile");
 
     if (stored) {
-
         const profile = JSON.parse(stored);
-
         currentProfile = profile;
-
         renderProfile(profile);
     }
 }
